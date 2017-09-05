@@ -14,7 +14,7 @@ class ViewController: NSViewController {
     let settingsManager = SettingsTableManager()
     @IBOutlet var settingsTable: NSTableView!
     
-    let propertiesManager = SettingsTableManager()
+    let propertiesManager = PropertiesTableManager()
     @IBOutlet var propertiesTable: NSTableView!
     
     @IBOutlet var outputTextView: NSTextView!
@@ -36,6 +36,11 @@ class ViewController: NSViewController {
         templator.properties.append(Templator.PropType.separator)
         
         outputTextView.string = templator.output(type: .viewController, name: "MyFirstViewController").first?.content
+        
+        // TODO: Can we get rid of this?
+//        settingsManager.templator = templator
+        propertiesManager.templator = templator
+        propertiesTable.reloadData()
     }
     
     // MARK: Configurations
@@ -57,6 +62,9 @@ class ViewController: NSViewController {
     
     func configurePropertiesTable() {
         propertiesManager.templator = templator
+        propertiesManager.didChange = { property in
+            print(property)
+        }
         
         propertiesTable.delegate = propertiesManager
         propertiesTable.dataSource = propertiesManager

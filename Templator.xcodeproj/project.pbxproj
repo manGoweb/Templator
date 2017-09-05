@@ -10,6 +10,7 @@
 		095076647F83BE265956DDFB /* Pods_Templator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C5802BB41A3AD7EA4890A756 /* Pods_Templator.framework */; };
 		11910F61080341253665D68A /* Pods_TemplatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 60671D03C97DDE6920EE1BFE /* Pods_TemplatorTests.framework */; };
 		152368381F5F4559002E46E0 /* TextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152368371F5F4559002E46E0 /* TextFieldCell.swift */; };
+		1523683A1F5F5398002E46E0 /* PropertiesTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152368391F5F5398002E46E0 /* PropertiesTableManager.swift */; };
 		1554AAF51F5D70C0007AA9C9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1554AAF41F5D70C0007AA9C9 /* AppDelegate.swift */; };
 		1554AAF71F5D70C0007AA9C9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1554AAF61F5D70C0007AA9C9 /* ViewController.swift */; };
 		1554AAF91F5D70C0007AA9C9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1554AAF81F5D70C0007AA9C9 /* Assets.xcassets */; };
@@ -67,6 +68,7 @@
 
 /* Begin PBXFileReference section */
 		152368371F5F4559002E46E0 /* TextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldCell.swift; sourceTree = "<group>"; };
+		152368391F5F5398002E46E0 /* PropertiesTableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertiesTableManager.swift; sourceTree = "<group>"; };
 		1554AAF11F5D70C0007AA9C9 /* Templator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Templator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1554AAF41F5D70C0007AA9C9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1554AAF61F5D70C0007AA9C9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				15D4FAED1F5F1DCE00322411 /* SettingsTableManager.swift */,
+				152368391F5F5398002E46E0 /* PropertiesTableManager.swift */,
 			);
 			path = "Table managers";
 			sourceTree = "<group>";
@@ -541,6 +544,7 @@
 				1554AB2E1F5E0C5B007AA9C9 /* Templates.swift in Sources */,
 				1554AB3C1F5E70DF007AA9C9 /* MainClass.swift in Sources */,
 				1554AB251F5D9674007AA9C9 /* TemplatorSettings.swift in Sources */,
+				1523683A1F5F5398002E46E0 /* PropertiesTableManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

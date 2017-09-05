@@ -44,9 +44,7 @@ class SettingsTableManager: NSObject, NSTableViewDelegate, NSTableViewDataSource
         if tableColumn == tableView.tableColumns[0] {
             let cell = TextFieldCell()
             cell.editField.stringValue = item.key.name() ?? "Unknown"
-            cell.valueChanged = { text in
-                self.didChangeSetting?(item.key, text)
-            }
+            cell.editField.isEditable = false
             return cell
         }
         else if tableColumn == tableView.tableColumns[1] {
