@@ -1,0 +1,9 @@
+\t// MARK: Layout
+\t
+\tfunc layoutElements() {
+{LAYOUT}\t}
+\t
+\t// MARK: Configuration
+\t
+\tfunc configureElements() {
+{CONFIGURE}\t}

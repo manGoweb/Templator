@@ -1,0 +1,3 @@
+\t\t{PROPERTY}.snp.makeConstraints { (make) in
+\t\t\t{MAKE}
+\t\t}
