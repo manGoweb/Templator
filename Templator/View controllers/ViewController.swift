@@ -27,13 +27,15 @@ class ViewController: NSViewController {
     // MARK: Actions
     
     @IBAction func didClickGenerate(_ sender: NSButton) {
-        templator.properties.append(Templator.PropType.group("Properties"))
-        templator.properties.append(Templator.PropType.property("justVariable", "AnyClass?"))
-        templator.properties.append(Templator.PropType.separator)
-        templator.properties.append(Templator.PropType.group("Views"))
-        templator.properties.append(Templator.PropType.view("justView", "UIView", true))
-        templator.properties.append(Templator.PropType.view("anotherView", "UILabel", false))
-        templator.properties.append(Templator.PropType.separator)
+        if templator.properties.count < 10 {
+            templator.properties.append(Templator.PropType.group("Properties"))
+            templator.properties.append(Templator.PropType.property("justVariable", "AnyClass?"))
+            templator.properties.append(Templator.PropType.separator)
+            templator.properties.append(Templator.PropType.group("Views"))
+            templator.properties.append(Templator.PropType.view("justView", "UIView", true))
+            templator.properties.append(Templator.PropType.view("anotherView", "UILabel", false))
+            templator.properties.append(Templator.PropType.separator)
+        }
         
         outputTextView.string = templator.output(type: .viewController, name: "MyFirstViewController").first?.content
         

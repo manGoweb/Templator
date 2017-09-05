@@ -54,7 +54,7 @@ class MainClass: TemplatorModule {
             case .view(let name, let className, _):
                 output = "\(output)\tlet \(name) = \(className)()\n"
             case .property(let name, let className):
-                output = "\(output)\tlet \(name): \(className)\n"
+                output = "\(output)\tvar \(name): \(className)\n"
             case .group(let name):
                 output = "\(output)\t// \(name)\n"
             default:
@@ -96,26 +96,31 @@ class MainClass: TemplatorModule {
             vars["LAYOUT"] = output
         }
         else {
-            vars["LAYOUT"] = ""
+            vars["LAYOUT"] = "\t\t\n"
         }
         
         // Configure elements
         var output = ""
-        for property: Templator.PropType in templator.properties {
-            switch property {
-            case .view(let name, _, _):
-                switch templator.outputType {
-                case .viewController:
-                    output = "\(output)\t\tview.addSubview(\(name))\n"
-                case .cell:
-                    output = "\(output)\t\tcontentView.addSubview(\(name))\n"
+        if let configureElements = templator.options[.configureElements] as? Bool, configureElements == true {
+            for property: Templator.PropType in templator.properties {
+                switch property {
+                case .view(let name, _, _):
+                    switch templator.outputType {
+                    case .viewController:
+                        output = "\(output)\t\tview.addSubview(\(name))\n"
+                    case .cell:
+                        output = "\(output)\t\tcontentView.addSubview(\(name))\n"
+                    default:
+                        output = "\(output)\t\taddSubview(\(name))\n"
+                        break
+                    }
                 default:
-                    output = "\(output)\t\taddSubview(\(name))\n"
                     break
                 }
-            default:
-                break
             }
+        }
+        else {
+            output = "\t\t\n"
         }
         vars["CONFIGURE"] = output
         
