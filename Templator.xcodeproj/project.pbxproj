@@ -58,6 +58,7 @@
 		1554AB511F5EC9C8007AA9C9 /* snapkit.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1554AB501F5EC9C8007AA9C9 /* snapkit.txt */; };
 		1554AB521F5EC9C8007AA9C9 /* snapkit.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1554AB501F5EC9C8007AA9C9 /* snapkit.txt */; };
 		156D0FA51F606CCB0038D454 /* base-controller.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1523684E1F6051C5002E46E0 /* base-controller.txt */; };
+		156D0FAC1F6081520038D454 /* String+Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 156D0FAB1F6081520038D454 /* String+Tools.swift */; };
 		15D4FAEE1F5F1DCE00322411 /* SettingsTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4FAED1F5F1DCE00322411 /* SettingsTableManager.swift */; };
 		15D4FAEF1F5F1DCE00322411 /* SettingsTableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4FAED1F5F1DCE00322411 /* SettingsTableManager.swift */; };
 		15D4FAF21F5F2FF100322411 /* CheckboxCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15D4FAF11F5F2FF100322411 /* CheckboxCell.swift */; };
@@ -117,6 +118,7 @@
 		1554AB471F5EC2EC007AA9C9 /* init-view.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "init-view.txt"; sourceTree = "<group>"; };
 		1554AB4D1F5EC314007AA9C9 /* init-cell.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "init-cell.txt"; sourceTree = "<group>"; };
 		1554AB501F5EC9C8007AA9C9 /* snapkit.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = snapkit.txt; sourceTree = "<group>"; };
+		156D0FAB1F6081520038D454 /* String+Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Tools.swift"; sourceTree = "<group>"; };
 		15D4FAED1F5F1DCE00322411 /* SettingsTableManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTableManager.swift; sourceTree = "<group>"; };
 		15D4FAF11F5F2FF100322411 /* CheckboxCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxCell.swift; sourceTree = "<group>"; };
 		60671D03C97DDE6920EE1BFE /* Pods_TemplatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TemplatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				1523683F1F601AD6002E46E0 /* NSView+Color.swift */,
+				156D0FAB1F6081520038D454 /* String+Tools.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -579,6 +582,7 @@
 				1554AB221F5D7697007AA9C9 /* Templator.swift in Sources */,
 				152368401F601AD6002E46E0 /* NSView+Color.swift in Sources */,
 				1554AB391F5E70A9007AA9C9 /* Header.swift in Sources */,
+				156D0FAC1F6081520038D454 /* String+Tools.swift in Sources */,
 				152368381F5F4559002E46E0 /* TextFieldCell.swift in Sources */,
 				1554AB351F5E0EB0007AA9C9 /* Files.swift in Sources */,
 				152368461F605080002E46E0 /* BaseClasses.swift in Sources */,

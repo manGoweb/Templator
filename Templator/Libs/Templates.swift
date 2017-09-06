@@ -33,7 +33,7 @@ class Templates {
     }
     
     static func dynamicProperty(name: String) -> String {
-        let prop = "<" + "#T##" + name + ")#>"
+        let prop = "<" + "#T##" + name + "#>"
         return prop
     }
     

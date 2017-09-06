@@ -445,6 +445,9 @@
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="didPressAddPropertyButton:" target="XfG-lQ-9wD" id="Qpt-kz-tV9"/>
+                                                </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="dCr-Xj-cAo">
                                                 <rect key="frame" x="354" y="94" width="65" height="32"/>
@@ -456,6 +459,9 @@
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="didPressAddViewButton:" target="XfG-lQ-9wD" id="Nqa-3E-oqh"/>
+                                                </connections>
                                             </button>
                                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="jmZ-fe-g0o">
                                                 <rect key="frame" x="10" y="45" width="342" height="22"/>
@@ -483,6 +489,9 @@
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="didPressAddGroupButton:" target="XfG-lQ-9wD" id="hI1-c0-58u"/>
+                                                </connections>
                                             </button>
                                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="T9P-oD-eOQ">
                                                 <rect key="frame" x="148" y="5" width="126" height="32"/>
@@ -490,6 +499,9 @@
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <connections>
+                                                    <action selector="didPressAddSeparatorButton:" target="XfG-lQ-9wD" id="P2B-PU-2rG"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <constraints>
@@ -558,8 +570,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="groupNameField" destination="jmZ-fe-g0o" id="vmE-rX-O7d"/>
                         <outlet property="propertiesTable" destination="Yns-ak-45M" id="6tY-xY-ojH"/>
+                        <outlet property="propertyNameField" destination="16n-Xq-JfA" id="gcg-0s-Piv"/>
                         <outlet property="settingsTable" destination="6sI-Sy-AU6" id="13C-fN-hca"/>
+                        <outlet property="viewNameField" destination="yvU-KX-DE3" id="3ru-xk-7Xc"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>

@@ -17,6 +17,10 @@ class ViewController: NSViewController {
     let propertiesManager = PropertiesTableManager()
     @IBOutlet var propertiesTable: NSTableView!
     
+    @IBOutlet var propertyNameField: NSTextField!
+    @IBOutlet var viewNameField: NSTextField!
+    @IBOutlet var groupNameField: NSTextField!
+    
     var tabController: ContentTabViewController!
     
     let templator = Templator()
@@ -26,7 +30,63 @@ class ViewController: NSViewController {
     
     // MARK: Actions
     
+    @IBAction func didPressAddPropertyButton(_ sender: NSButton) {
+        guard propertyNameField.stringValue.characters.count > 0 else {
+            return
+        }
+        let parts = propertyNameField.stringValue.trimmed().components(separatedBy: ":")
+        let className: String
+        if parts.count > 1 {
+            className = parts[1].trimmed()
+        }
+        else {
+            className = "AnyObject?"
+        }
+        templator.properties.append(Templator.PropType.property(parts[0].trimmed(), className))
+        
+        reloadOutput()
+    }
     
+    @IBAction func didPressAddViewButton(_ sender: NSButton) {
+        guard viewNameField.stringValue.characters.count > 0 else {
+            return
+        }
+        let parts = viewNameField.stringValue.trimmed().components(separatedBy: ":")
+        let className: String
+        if parts.count > 1 {
+            className = parts[1].trimmed()
+        }
+        else {
+            className = "UIView"
+        }
+        templator.properties.append(Templator.PropType.view(parts[0].trimmed(), className, false))
+        
+        reloadOutput()
+    }
+    
+    @IBAction func didPressAddGroupButton(_ sender: NSButton) {
+        guard groupNameField.stringValue.characters.count > 0 else {
+            return
+        }
+        templator.properties.append(Templator.PropType.group(groupNameField.stringValue))
+        
+        reloadOutput()
+    }
+    
+    @IBAction func didPressAddSeparatorButton(_ sender: NSButton) {
+        if let lastItem: Templator.PropType = templator.properties.last {
+            switch lastItem {
+            case .separator,
+                 .group:
+                return
+            default:
+                break
+            }
+        }
+        templator.properties.append(Templator.PropType.separator)
+        
+        reloadOutput()
+    }
     
     // MARK: Configurations
     
@@ -40,16 +100,16 @@ class ViewController: NSViewController {
         }
     }
     
-    func refreshOutput() {
-        if templator.properties.count < 10 {
-            templator.properties.append(Templator.PropType.group("Properties"))
-            templator.properties.append(Templator.PropType.property("justVariable", "AnyClass?"))
-            templator.properties.append(Templator.PropType.separator)
-            templator.properties.append(Templator.PropType.group("Views"))
-            templator.properties.append(Templator.PropType.view("justView", "UIView", true))
-            templator.properties.append(Templator.PropType.view("anotherView", "UILabel", false))
-            templator.properties.append(Templator.PropType.separator)
-        }
+    func reloadOutput() {
+//        if templator.properties.count < 10 {
+//            templator.properties.append(Templator.PropType.group("Properties"))
+//            templator.properties.append(Templator.PropType.property("justVariable", "AnyClass?"))
+//            templator.properties.append(Templator.PropType.separator)
+//            templator.properties.append(Templator.PropType.group("Views"))
+//            templator.properties.append(Templator.PropType.view("justView", "UIView", true))
+//            templator.properties.append(Templator.PropType.view("anotherView", "UILabel", false))
+//            templator.properties.append(Templator.PropType.separator)
+//        }
         
         let output = templator.output(type: .viewController, name: "MyFirstViewController")
         
@@ -91,7 +151,7 @@ class ViewController: NSViewController {
         settingsManager.templator = templator
         settingsManager.didChangeSetting = { key, value in
             self.templator.options[key] = value
-            self.refreshOutput()
+            self.reloadOutput()
         }
         
         settingsTable.delegate = settingsManager
@@ -101,24 +161,11 @@ class ViewController: NSViewController {
     func configurePropertiesTable() {
         propertiesManager.templator = templator
         propertiesManager.didChange = { property in
-            print(property)
+            self.templator.properties[property.1] = property.0
         }
         
         propertiesTable.delegate = propertiesManager
         propertiesTable.dataSource = propertiesManager
-    }
-    
-    func configureTabController() {
-//        tabController = ContentTabViewController()
-//        addChildViewController(tabController)
-//        view.addSubview(tabController.view)
-//
-//        tabController.view.layer?.backgroundColor = NSColor.red.cgColor
-//        tabController.view.snp.makeConstraints { (make) in
-//            make.top.equalTo(20)
-//            make.bottom.right.equalTo(-2)
-//            make.left.equalTo(settingsTable.snp.right).offset(8)
-//        }
     }
     
     // MARK: View lifecycle
@@ -132,13 +179,12 @@ class ViewController: NSViewController {
         
         configureSettingsTable()
         configurePropertiesTable()
-        configureTabController()
     }
     
     override func viewWillAppear() {
         super.viewWillAppear()
         
-        refreshOutput()
+        reloadOutput()
     }
     
     override func viewDidAppear() {
