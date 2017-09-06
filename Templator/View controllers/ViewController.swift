@@ -9,14 +9,15 @@
 import Cocoa
 
 
-class ViewController: NSViewController {
+class ViewController: NSViewController, NSTextFieldDelegate {
     
     let settingsManager = SettingsTableManager()
     @IBOutlet var settingsTable: NSTableView!
     
     let propertiesManager = PropertiesTableManager()
-    @IBOutlet var propertiesTable: NSTableView!
+    @IBOutlet var propertiesTable: TableView!
     
+    @IBOutlet var documentNameField: NSTextField!
     @IBOutlet var propertyNameField: NSTextField!
     @IBOutlet var viewNameField: NSTextField!
     @IBOutlet var groupNameField: NSTextField!
@@ -74,6 +75,9 @@ class ViewController: NSViewController {
     }
     
     @IBAction func didPressAddSeparatorButton(_ sender: NSButton) {
+        guard templator.properties.count > 0 else {
+            return
+        }
         if let lastItem: Templator.PropType = templator.properties.last {
             switch lastItem {
             case .separator,
@@ -85,6 +89,18 @@ class ViewController: NSViewController {
         }
         templator.properties.append(Templator.PropType.separator)
         
+        reloadOutput()
+    }
+    
+    @IBAction func didSelectFileTypeButton(_ sender: NSPopUpButton) {
+        switch sender.indexOfSelectedItem {
+        case 1:
+            templator.outputType = .view
+        case 2:
+            templator.outputType = .cell
+        default:
+            templator.outputType = .viewController
+        }
         reloadOutput()
     }
     
@@ -100,22 +116,15 @@ class ViewController: NSViewController {
         }
     }
     
+    var firstLoad: Bool = true
+    
     func reloadOutput() {
-//        if templator.properties.count < 10 {
-//            templator.properties.append(Templator.PropType.group("Properties"))
-//            templator.properties.append(Templator.PropType.property("justVariable", "AnyClass?"))
-//            templator.properties.append(Templator.PropType.separator)
-//            templator.properties.append(Templator.PropType.group("Views"))
-//            templator.properties.append(Templator.PropType.view("justView", "UIView", true))
-//            templator.properties.append(Templator.PropType.view("anotherView", "UILabel", false))
-//            templator.properties.append(Templator.PropType.separator)
-//        }
-        
-        let output = templator.output(type: .viewController, name: "MyFirstViewController")
+        let output = templator.output(name: documentNameField.stringValue)
         
         // If we need additional (or fewer) controllers
         if output.count > 0 {
-            if tabController.childViewControllers.count != output.count {
+            if tabController.childViewControllers.count != output.count || firstLoad {
+                firstLoad = false
                 tabController.childViewControllers.removeAll()
                 for view in tabSubviews {
                     view.removeFromSuperview()
@@ -141,8 +150,7 @@ class ViewController: NSViewController {
                 }
             }
         }
-
-        // TODO: Can we get rid of this?
+        
         propertiesManager.templator = templator
         propertiesTable.reloadData()
     }
@@ -163,9 +171,20 @@ class ViewController: NSViewController {
         propertiesManager.didChange = { property in
             self.templator.properties[property.1] = property.0
         }
+        propertiesManager.finishedEditing = { property in
+            self.templator.properties[property.1] = property.0
+            self.reloadOutput()
+        }
         
         propertiesTable.delegate = propertiesManager
         propertiesTable.dataSource = propertiesManager
+    }
+    
+    func configureTextFields() {
+        documentNameField.delegate = self
+        propertyNameField.delegate = self
+        viewNameField.delegate = self
+        groupNameField.delegate = self
     }
     
     // MARK: View lifecycle
@@ -184,6 +203,7 @@ class ViewController: NSViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
         
+        configureTextFields()
         reloadOutput()
     }
     
@@ -195,6 +215,32 @@ class ViewController: NSViewController {
         didSet {
             // Update the view, if already loaded.
         }
+    }
+    
+    // MARK: Text field delegate
+    
+    override func controlTextDidChange(_ obj: Notification) {
+        if let field = obj.object as? NSTextField, field.tag == 10 {
+            reloadOutput()
+        }
+    }
+    
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if (commandSelector == #selector(NSResponder.insertNewline(_:))) {
+            switch true {
+            case control.tag == 10:
+                reloadOutput()
+            case control.tag == 100:
+                didPressAddPropertyButton(NSButton())
+            case control.tag == 101:
+                didPressAddViewButton(NSButton())
+            case control.tag == 102:
+                didPressAddGroupButton(NSButton())
+            default:
+                return true
+            }
+        }
+        return false
     }
 
 }

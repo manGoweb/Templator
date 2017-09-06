@@ -68,11 +68,23 @@ public class Templator {
             data[.projectAuthor] = "Ondrej Rafaj"
             data[.projectCompany] = "Ford"
             data[.parentClass] = ""
-            data[.baseClassSystem] = false
+            data[.baseClassSystem] = true
             data[.headerEnable] = true
             data[.snapKit] = true
             data[.configureElements] = true
             return data
+        }
+        
+        static func sortedKeys() -> [Options] {
+            var s: [Options] = []
+            s.append(.projectName)
+            s.append(.projectAuthor)
+            s.append(.projectCompany)
+            s.append(.parentClass)
+            s.append(.baseClassSystem)
+            s.append(.snapKit)
+            s.append(.headerEnable)
+            return s
         }
         
         func templateValue() -> String? {

@@ -19,16 +19,14 @@ class SettingsTableManager: NSObject, NSTableViewDelegate, NSTableViewDataSource
     var templator: Templator! {
         didSet {
             var data: [Item] = []
-            for key: Templator.Options in templator.options.keys {
+            
+            for key in Templator.Options.sortedKeys() {
                 if let value: Any = templator.options[key] {
                     data.append((key: key, value: value))
                 }
             }
             
-            // Sort alphabetically
-            self.data = data.sorted(by: { (option1, option2) -> Bool in
-                return (option1.key.name() ?? "") < (option2.key.name() ?? "")
-            })
+            self.data = data
         }
     }
     
@@ -61,6 +59,12 @@ class SettingsTableManager: NSObject, NSTableViewDelegate, NSTableViewDataSource
                 cell.editField.stringValue = (item.value as? String) ?? ""
                 cell.valueChanged = { text in
                     self.didChangeSetting?(item.key, text)
+                }
+                switch item.key {
+                case .parentClass:
+                    cell.editField.placeholderString = "CustomParentClass"
+                default:
+                    cell.editField.placeholderString = ""
                 }
                 return cell
             }

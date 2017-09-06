@@ -14,6 +14,7 @@ import SnapKit
 class TextFieldCell: NSTableCellView, NSTextFieldDelegate {
     
     var valueChanged: ((_ value: String)->())?
+    var finishedEditing: ((_ value: String)->())?
     var editField = NSTextField()
     
     // MARK: Initialization
@@ -47,6 +48,15 @@ class TextFieldCell: NSTableCellView, NSTextFieldDelegate {
     
     override func controlTextDidChange(_ obj: Notification) {
         valueChanged?(editField.stringValue)
+    }
+    
+    override func controlTextDidEndEditing(_ obj: Notification) {
+        finishedEditing?(editField.stringValue)
+    }
+    
+    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        finishedEditing?(editField.stringValue)
+        return true
     }
     
 }

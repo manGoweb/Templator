@@ -13,6 +13,7 @@ import Cocoa
 class PropertiesTableManager: NSObject, NSTableViewDelegate, NSTableViewDataSource {
     
     var didChange: ((_ property: Item, _ row: Int)->())?
+    var finishedEditing: ((_ property: Item, _ row: Int)->())?
     
     typealias Item = Templator.PropType
     
@@ -61,6 +62,21 @@ class PropertiesTableManager: NSObject, NSTableViewDelegate, NSTableViewDataSour
                 }
                 self.didChange?(newItem, row)
             }
+            cell.finishedEditing = { text in
+                let newItem: Item
+                switch item {
+                case .property(_, let className):
+                    newItem = Item.property(text, className)
+                case .view(_, let className, let fulscreen):
+                    newItem = Item.view(text, className, fulscreen)
+                case .separator:
+                    return
+                case .group:
+                    let trimmed = text.trimmed()
+                    newItem = Item.group(trimmed)
+                }
+                self.finishedEditing?(newItem, row)
+            }
             return cell
         }
         else if tableColumn == tableView.tableColumns[1] {
@@ -90,6 +106,20 @@ class PropertiesTableManager: NSObject, NSTableViewDelegate, NSTableViewDataSour
                     return
                 }
                 self.didChange?(newItem, row)
+            }
+            cell.finishedEditing = { text in
+                let newItem: Item
+                switch item {
+                case .property(let name, _):
+                    newItem = Item.property(name, text)
+                case .view(let name, _, let fulscreen):
+                    newItem = Item.view(name, text, fulscreen)
+                case .separator:
+                    return
+                case .group:
+                    return
+                }
+                self.finishedEditing?(newItem, row)
             }
             return cell
         }
