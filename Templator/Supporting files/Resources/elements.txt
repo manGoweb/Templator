@@ -6,4 +6,4 @@
 \t// MARK: Configuration
 \t
 \tfunc configureElements() {
-{CONFIGURE}\t}
+{CONFIGURE}\t}{INIT}

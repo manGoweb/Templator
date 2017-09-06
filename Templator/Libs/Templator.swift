@@ -17,7 +17,8 @@ public class Templator {
     
     let header = Header()
     let mainClass = MainClass()
-    
+    let baseClasses = BaseClasses()
+
     public struct Output {
         var fileName: String
         var content: String
@@ -67,7 +68,7 @@ public class Templator {
             data[.projectAuthor] = "Ondrej Rafaj"
             data[.projectCompany] = "Ford"
             data[.parentClass] = ""
-            data[.baseClassSystem] = true
+            data[.baseClassSystem] = false
             data[.headerEnable] = true
             data[.snapKit] = true
             data[.configureElements] = true
@@ -97,7 +98,7 @@ public class Templator {
     var properties: [PropType] = []
     var options: [Options: Any] = [:] {
         didSet {
-            print(":)")
+            print("Options updated")
         }
     }
     var fileName: String!
@@ -121,6 +122,7 @@ public class Templator {
     private func updateModules() {
         header.templator = self
         mainClass.templator = self
+        baseClasses.templator = self
     }
     
     public func output(type: OutputType? = nil, name: String) -> [Output] {
@@ -135,9 +137,13 @@ public class Templator {
         var mainFile = ""
         mainFile.append(header.basic())
         mainFile.append(mainClass.basic())
-        let output = [
-            Output(fileName: "\(fileName).swift", content: mainFile)
+        var output = [
+            Output(fileName: "\(fileName ?? "Unknown").swift", content: mainFile)
         ]
+        
+        if let baseClassOutput = baseClasses.baseClass() {
+            output.append(baseClassOutput)
+        }
         return output
     }
     

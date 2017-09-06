@@ -1,3 +1,21 @@
+import Foundation
+import UIKit
+
+
+class {PARENT}: UIViewController {
+\t
+\t// MARK: Layout
+\t
+\tfunc layoutElements() {
+\t\t
+\t}
+\t
+\t// MARK: Elements
+\t
+\tfunc configureElements() {
+\t\t
+\t}
+\t
 \t// MARK: View lifecycle
 \t
 \toverride func loadView() {
@@ -11,3 +29,5 @@
 \t\t
 \t\tlayoutElements()
 \t}
+\t
+}

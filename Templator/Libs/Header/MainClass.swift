@@ -24,22 +24,62 @@ class MainClass: TemplatorModule {
         }
         
         // SnapKit
-        if let snp = templator.options[.snapKit] as? Bool, snp == true {
+        if let value = templator.options[.snapKit] as? Bool, value == true {
             output = "\(output)import SnapKit\n"
         }
         
         return output + "\n\n"
     }
     
+    func defaultBaseClass() -> String {
+        let defaultBaseClass: String
+        
+        if let value = templator.options[.baseClassSystem] as? Bool, value == true {
+            switch templator.outputType {
+            case .view:
+                defaultBaseClass = "View"
+            case .cell:
+                defaultBaseClass = "TableViewCell"
+            case .viewController:
+                defaultBaseClass = "ViewController"
+            }
+        }
+        else {
+            switch templator.outputType {
+            case .view:
+                defaultBaseClass = "UIView"
+            case .cell:
+                defaultBaseClass = "UITableViewCell"
+            case .viewController:
+                defaultBaseClass = "UIViewController"
+            }
+        }
+        
+        return defaultBaseClass
+    }
+    
+    func parentClass() -> String {
+        let baseClass = defaultBaseClass()
+        var parentClass = (templator.options[.parentClass] as? String) ?? baseClass
+        if parentClass.characters.count == 0 {
+            parentClass = baseClass
+        }
+        return parentClass
+    }
+    
     func basic() -> String {
         var output = importsString()
-        let parentClass = (templator.options[.parentClass] as? String) ?? "UIView"
+        
+        // Deciding base class
+        let parent = parentClass()
+        
+        // Creating the class
         guard let template = Files.template(named: "class") else {
             return ""
         }
         
         var vars = templator.vars()
-        vars["PARENT"] = parentClass
+        vars["PARENT"] = parent
         vars["CONTENT"] = content()
         
         let parsed = Templates.replace(codesIn: template, with: vars)
@@ -75,8 +115,11 @@ class MainClass: TemplatorModule {
         
         // Layout / SnapKit
         var vars = templator.vars()
+        var output = ""
+        if let value = templator.options[.baseClassSystem] as? Bool, value == true {
+            output = "\(output)\t\tsuper.layoutElements()\n\n"
+        }
         if let snp = templator.options[.snapKit] as? Bool, snp == true {
-            var output = ""
             for property: Templator.PropType in templator.properties {
                 switch property {
                 case .view(let name, _, let fullscreen):
@@ -93,15 +136,18 @@ class MainClass: TemplatorModule {
                     break
                 }
             }
-            vars["LAYOUT"] = output
         }
         else {
-            vars["LAYOUT"] = "\t\t\n"
+            output = output + "\t\t\n"
         }
+        vars["LAYOUT"] = output
         
         // Configure elements
-        var output = ""
-        if let configureElements = templator.options[.configureElements] as? Bool, configureElements == true {
+        output = ""
+        if let value = templator.options[.baseClassSystem] as? Bool, value == true {
+            output = "\(output)\t\tsuper.configureElements()\n\n"
+        }
+        if let value = templator.options[.configureElements] as? Bool, value == true {
             for property: Templator.PropType in templator.properties {
                 switch property {
                 case .view(let name, _, _):
@@ -122,12 +168,46 @@ class MainClass: TemplatorModule {
         else {
             output = "\t\t\n"
         }
+        output = output + initializers()
+        
         vars["CONFIGURE"] = output
+        
+        // Initialization
+        if let value = templator.options[.baseClassSystem] as? Bool, value == false {
+            let baseType: String
+            switch templator.outputType {
+            case .view:
+                baseType = "init-view"
+            case .cell:
+                baseType = "init-cell"
+            case .viewController:
+                baseType = "init-controller"
+            }
+            
+            guard let template = Files.template(named: baseType) else {
+                return "Missing init template!\n"
+            }
+            var baseVars = templator.vars()
+            baseVars["FILENAME"] = templator.fileName
+            baseVars["PARENT"] = templator.mainClass.parentClass()
+            let output = "\n\t\n" + Templates.replace(codesIn: template, with: baseVars)
+            
+            vars["INIT"] = output
+        }
+        else {
+            vars["INIT"] = ""
+        }
         
         let parsedElements = Templates.replace(codesIn: elements, with: vars)
         let content = "\(properties())\(parsedElements)"
         
         return content
+    }
+    
+    // MARK: Initializers
+    
+    func initializers() -> String {
+        return ""
     }
     
 }

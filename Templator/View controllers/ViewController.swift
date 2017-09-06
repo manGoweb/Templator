@@ -17,16 +17,30 @@ class ViewController: NSViewController {
     let propertiesManager = PropertiesTableManager()
     @IBOutlet var propertiesTable: NSTableView!
     
-    @IBOutlet var outputTextView: NSTextView!
-    
-    @IBOutlet var refreshButton: NSButton!
+    var tabController: ContentTabViewController!
     
     let templator = Templator()
+    
+    var tabSubviews: [NSView] = []
     
     
     // MARK: Actions
     
-    @IBAction func didClickGenerate(_ sender: NSButton) {
+    
+    
+    // MARK: Configurations
+    
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        guard let identifier = segue.identifier else { return }
+        switch identifier {
+        case "hello":
+            tabController = segue.destinationController as! ContentTabViewController
+        default:
+            break
+        }
+    }
+    
+    func refreshOutput() {
         if templator.properties.count < 10 {
             templator.properties.append(Templator.PropType.group("Properties"))
             templator.properties.append(Templator.PropType.property("justVariable", "AnyClass?"))
@@ -37,18 +51,40 @@ class ViewController: NSViewController {
             templator.properties.append(Templator.PropType.separator)
         }
         
-        outputTextView.string = templator.output(type: .viewController, name: "MyFirstViewController").first?.content
+        let output = templator.output(type: .viewController, name: "MyFirstViewController")
         
+        // If we need additional (or fewer) controllers
+        if output.count > 0 {
+            if tabController.childViewControllers.count != output.count {
+                tabController.childViewControllers.removeAll()
+                for view in tabSubviews {
+                    view.removeFromSuperview()
+                }
+                tabSubviews.removeAll()
+                
+                for i: Int in 0...(output.count - 1) {
+                    let storyboard = NSStoryboard(name: "Main", bundle: nil)
+                    let controller = storyboard.instantiateController(withIdentifier: "contentViewController") as! ContentViewController
+                    controller.file = output[i]
+                    tabController.addChildViewController(controller)
+                    tabController.tabViewItems[i].label = controller.file?.fileName ?? "Unknown.swift"
+                }
+            }
+            else {
+                // Fill in the output data
+                for i: Int in 0...(output.count - 1) {
+                    guard let controller = tabController.childViewControllers[i] as? ContentViewController else {
+                        continue
+                    }
+                    controller.file = output[i]
+                    tabController.tabViewItems[i].label = controller.file?.fileName ?? "Unknown.swift"
+                }
+            }
+        }
+
         // TODO: Can we get rid of this?
-//        settingsManager.templator = templator
         propertiesManager.templator = templator
         propertiesTable.reloadData()
-    }
-    
-    // MARK: Configurations
-    
-    func refreshOutput() {
-        didClickGenerate(self.refreshButton)
     }
     
     func configureSettingsTable() {
@@ -72,15 +108,41 @@ class ViewController: NSViewController {
         propertiesTable.dataSource = propertiesManager
     }
     
+    func configureTabController() {
+//        tabController = ContentTabViewController()
+//        addChildViewController(tabController)
+//        view.addSubview(tabController.view)
+//
+//        tabController.view.layer?.backgroundColor = NSColor.red.cgColor
+//        tabController.view.snp.makeConstraints { (make) in
+//            make.top.equalTo(20)
+//            make.bottom.right.equalTo(-2)
+//            make.left.equalTo(settingsTable.snp.right).offset(8)
+//        }
+    }
+    
     // MARK: View lifecycle
+    
+    override func loadView() {
+        super.loadView()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Le Templator"
-        
         configureSettingsTable()
         configurePropertiesTable()
+        configureTabController()
+    }
+    
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        
+        refreshOutput()
+    }
+    
+    override func viewDidAppear() {
+        super.viewDidAppear()
     }
 
     override var representedObject: Any? {

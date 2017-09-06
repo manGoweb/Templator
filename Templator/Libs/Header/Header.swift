@@ -13,13 +13,19 @@ class Header: TemplatorModule {
     
     var templator: Templator!
     
-    func basic() -> String {
-        guard let template = Files.template(named: "header") else {
-            return ""
+    func basic(fileName: String? = nil) -> String {
+        if let value = templator.options[.headerEnable] as? Bool, value == true {
+            guard let template = Files.template(named: "header") else {
+                return ""
+            }
+            var vars = templator.vars()
+            if fileName != nil {
+                vars["FILENAME"] = fileName
+            }
+            let parsed = Templates.replace(codesIn: template, with: vars)
+            return parsed
         }
-        
-        let parsed = Templates.replace(codesIn: template, with: templator.vars())
-        return parsed
+        return ""
     }
     
 }
