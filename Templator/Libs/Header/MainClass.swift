@@ -12,7 +12,8 @@ import Foundation
 class MainClass: TemplatorModule {
     
     var imports: [String] = [
-        "Foundation"
+        "Foundation",
+        "UIKit"
     ]
     
     var templator: Templator!

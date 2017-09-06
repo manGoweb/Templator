@@ -55,8 +55,10 @@ class TextFieldCell: NSTableCellView, NSTextFieldDelegate {
     }
     
     func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
-        finishedEditing?(editField.stringValue)
-        return true
+        if (commandSelector == #selector(NSResponder.insertNewline(_:))) {
+            finishedEditing?(editField.stringValue)
+        }
+        return false
     }
     
 }
