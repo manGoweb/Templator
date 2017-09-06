@@ -178,6 +178,11 @@ class ViewController: NSViewController, NSTextFieldDelegate {
         
         propertiesTable.delegate = propertiesManager
         propertiesTable.dataSource = propertiesManager
+        
+        propertiesTable.deleteRow = { row in
+            self.templator.properties.remove(at: row)
+            self.reloadOutput()
+        }
     }
     
     func configureTextFields() {

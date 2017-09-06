@@ -280,7 +280,7 @@
                                                     <rect key="frame" x="1" y="0.0" width="417" height="150"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                     <subviews>
-                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ppc-6j-6xO" viewBased="YES" id="Yns-ak-45M">
+                                                        <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ppc-6j-6xO" viewBased="YES" id="Yns-ak-45M" customClass="TableView" customModule="Templator" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="0.0" width="417" height="127"/>
                                                             <autoresizingMask key="autoresizingMask"/>
                                                             <size key="intercellSpacing" width="3" height="2"/>

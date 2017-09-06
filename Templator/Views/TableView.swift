@@ -12,7 +12,7 @@ import Cocoa
 
 class TableView: NSTableView {
     
-    var deleteRows: ((_ rows: [Int])->())?
+    var deleteRow: ((_ row: Int)->())?
     
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
@@ -20,14 +20,18 @@ class TableView: NSTableView {
         guard event.charactersIgnoringModifiers == String(Character(UnicodeScalar(NSDeleteCharacter)!)) else {
             return
         }
+        
+        requestDeletionOfSelectedRows()
     }
     
     func requestDeletionOfSelectedRows() {
         guard numberOfSelectedRows > 0 else {
             return
         }
-        let indexes: [Int] = []
-        deleteRows?(indexes)
+        
+        for row in selectedRowIndexes.reversed() {
+            deleteRow?(row)
+        }
     }
     
 }
