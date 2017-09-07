@@ -1,5 +1,5 @@
 //
-//  {FILENAME}
+//  {FILENAME}.swift
 //  {PROJECT}
 //
 //  Created by {AUTHOR} on {DATE}.
